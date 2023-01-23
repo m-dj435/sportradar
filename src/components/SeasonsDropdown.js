@@ -1,19 +1,18 @@
 import React from "react";
 import { Dropdown } from "semantic-ui-react";
 
-const SeasonsDropdown = (props) => {
+const SeasonsDropdown = ({ onSelectChange, options, value }) => {
   const onChangeHandler = (event) => {
-    props.filerValueSelected(event.target.textContent);
+    onSelectChange(event.target.textContent);
   };
-  console.log(props);
+
   return (
     <Dropdown
-      placeholder={"Pick Season"}
-      fluid
+      className="xl:w-60 ml-auto"
       selection
-      options={props.options}
+      options={options}
       onChange={onChangeHandler}
-      defaultValue={props.selectedValue}
+      defaultValue={value}
     />
   );
 };
