@@ -1,13 +1,22 @@
 import { useState } from "react";
+import { Header } from "semantic-ui-react";
+import Pagination from "react-js-pagination";
 
 import SeasonTable from "../components/SeasonTable";
 import SeasonsDropdown from "../components/SeasonsDropdown";
 import { options, schedules } from "../helpers/helpers";
 import { Layout } from "../components/Layout";
-import { Header } from "semantic-ui-react";
+import useWindowWidth from "../hooks/useWindowWidth";
+import "../style/pagination.css";
+
+const OFFSET = 20;
 
 const Homepage = () => {
   const [selectValue, setSelectValue] = useState(options[0].value);
+  const [activePage, setActivePage] = useState(1);
+  const { isMobile } = useWindowWidth();
+
+  const startedValue = activePage * OFFSET - OFFSET;
 
   const filteredDataSeasons = schedules.filter(
     ({ sport_event }) =>
@@ -16,7 +25,17 @@ const Homepage = () => {
 
   const onFilterChangeHandler = (filteredSeasons) => {
     setSelectValue(filteredSeasons);
+    setActivePage(1);
   };
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+  const currentDataList = filteredDataSeasons.slice(
+    startedValue,
+    startedValue + OFFSET
+  );
 
   return (
     <Layout>
@@ -28,7 +47,16 @@ const Homepage = () => {
         options={options}
         onSelectChange={onFilterChangeHandler}
       />
-      <SeasonTable data={filteredDataSeasons} />
+      <SeasonTable data={currentDataList} />
+      <div className="flex justify-center">
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={OFFSET}
+          totalItemsCount={filteredDataSeasons.length}
+          pageRangeDisplayed={isMobile ? 3 : 5}
+          onChange={handlePageChange}
+        />
+      </div>
     </Layout>
   );
 };
