@@ -37,6 +37,7 @@ if (isLoading) return <Spinner />;
 And finally here replace data with schedules that are already imported in file
 
 ```
+// import { schedules } from "../helpers/helpers";
 const filteredDataSeasons = data.filter(
   ({ sport_event }) =>
     sport_event.sport_event_context.season.name === seasonName
