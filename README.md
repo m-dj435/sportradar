@@ -9,7 +9,7 @@ Please see that this uses SECRET_KEY. In order to use this app please set your o
 ## Please be aware of CORS issue.
 
 Unfortunately I struggle with sportradar calls ended up with CORS error.
-In order to fix problem I could make an proxy server however that was not the point of my tasks so I decided to use [https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc](Moesif Origin & CORS Changer) chrome extension.
+In order to fix problem I could make an proxy server however that was not the point of my tasks so I decided to use [Moesif Origin & CORS Changer](https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc) chrome extension.
 
 ### In project helpers folder
 
