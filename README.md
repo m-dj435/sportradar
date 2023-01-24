@@ -4,7 +4,8 @@ This app is about Ekstraklasa seasons. In order to see timeline of particular ma
 
 ## Env.
 
-Please see that this uses SECRET_KEY. In order to use this app please set your own key please register [https://developer.sportradar.com/docs/read/Home](sportradar) over there. Furthermore please set you REACT_APP_API_KEY in .env.local file in the root of project
+Please see that this uses SECRET_KEY. In order to use this app please set your own key please register [Sportradar Developer Portal
+](https://developer.sportradar.com/docs/read/Home) over there. Furthermore please set you REACT_APP_API_KEY in .env.local file in the root of project
 
 ## Please be aware of CORS issue.
 
