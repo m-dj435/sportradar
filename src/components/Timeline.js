@@ -24,7 +24,7 @@ const Timeline = ({
                 <div className="w-8">{minutes}&#x0313;</div>
                 <div className="flex justify-start w-full mx-auto text-center">
                   <div className="w-full sm:w-1/2 sm:pr-8">
-                    <div className="p-4 bg-white rounded shadow">
+                    <div className="p-2 bg-white rounded shadow">
                       {descriptionType}
                     </div>
                     {descriptionType === "score change" ? (
@@ -38,7 +38,7 @@ const Timeline = ({
                     ) : null}
                     {descriptionType === "yellow card" ||
                     descriptionType === "red card" ||
-                    descriptionType === "yellow red card" ? (
+                    descriptionType === "yellow red_card" ? (
                       <>
                         <div className="font-bold">{scorer} </div>
                       </>
@@ -57,7 +57,7 @@ const Timeline = ({
                 <div className="w-8">{minutes}&#x0313;</div>
                 <div className="flex justify-end w-full mx-auto text-center">
                   <div className="w-full sm:w-1/2 sm:pl-8">
-                    <div className="p-4 bg-white rounded shadow">
+                    <div className="p-2 bg-white rounded shadow">
                       {descriptionType}
                     </div>
                     {descriptionType === "score change" ? (
@@ -71,7 +71,7 @@ const Timeline = ({
                     ) : null}
                     {descriptionType === "yellow card" ||
                     descriptionType === "red card" ||
-                    descriptionType === "yellow red card" ? (
+                    descriptionType === "yellow red_card" ? (
                       <>
                         <div className="font-bold">{scorer} </div>
                       </>

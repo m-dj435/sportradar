@@ -2,8 +2,8 @@ import React from "react";
 import { Dropdown } from "semantic-ui-react";
 
 const SeasonsDropdown = ({ onSelectChange, options, value }) => {
-  const onChangeHandler = (event) => {
-    onSelectChange(event.target.textContent);
+  const onChangeHandler = (event, { value }) => {
+    onSelectChange(value);
   };
 
   return (

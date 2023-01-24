@@ -7,10 +7,12 @@ const dataS20_21 = mockedDataS20_21.schedules;
 const dataS21_22 = mockedDataS21_22.schedules;
 const dataS22_23 = mockedDataS22_23.schedules;
 
-export const options = seasonData.seasons.map(({ name }) => {
+export const options = seasonData.seasons.map(({ name, id }) => {
+  const lastUnnecessaryChar = id.lastIndexOf(":");
+  let seasonId = id.substring(lastUnnecessaryChar + 1);
   return {
     text: name,
-    value: name,
+    value: seasonId,
   };
 });
 

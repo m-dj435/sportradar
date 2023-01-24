@@ -1,31 +1,53 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
+import Spinner from "../components/Spinner";
 import Timeline from "../components/Timeline";
 import BallPossession from "../components/BallPossession";
 import Alert from "../components/Alert";
 import { Layout } from "../components/Layout";
-import mockedEventTimeline from "../helpers/mockedEventTimeline.json";
+// import mockedEventTimeline from "../helpers/mockedEventTimeline.json";
 // import mockedEventTimeline from "../helpers/mockedEventTimelinePostponed.json";
 
-const dataEventTimeline = mockedEventTimeline;
-const firstTeamName = dataEventTimeline.sport_event.competitors[0].name;
-const secondTeamName = dataEventTimeline.sport_event.competitors[1].name;
-const status = dataEventTimeline.sport_event_status;
-const result = status?.home_score + " : " + status?.away_score;
-const eventDate = dataEventTimeline.sport_event.start_time;
-const formatDate = new Date(eventDate).toLocaleDateString("en-CA");
-const ballpossession =
-  dataEventTimeline.statistics?.totals.competitors[0].statistics
-    .ball_possession;
-const timeline = dataEventTimeline.timeline;
+const SECRET_KEY = process.env.REACT_APP_API_KEY;
 
 const About = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState(undefined);
   const { id } = useParams();
-  console.log(id);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        `https://api.sportradar.us/soccer/trial/v4/en/sport_events/sr:sport_event:${id}/timeline.json?api_key=${SECRET_KEY}`
+      );
+      setData(result.data);
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [id]);
+
+  if (isLoading) return <Spinner />;
+  if (!data) return <>Ooops</>;
+
+  const {
+    sport_event: { competitors, start_time },
+    sport_event_status: { home_score, away_score, status, period_scores },
+    statistics,
+    timeline: timelineData,
+  } = data;
+
+  const firstTeamName = competitors[0].name;
+  const secondTeamName = competitors[1].name;
+  const result = home_score + " : " + away_score;
+  const formatDate = new Date(start_time).toLocaleDateString("en-CA");
+  const ballpossession =
+    statistics?.totals.competitors[0].statistics.ball_possession;
+  const timeline = timelineData;
+  console.log(timeline);
   return (
     <Layout>
-      {/* <div>About {id}</div> */}
       <div className="flex justify-center text-sm font-semibold pt-6">
         {formatDate}
       </div>
@@ -34,19 +56,19 @@ const About = () => {
           {firstTeamName}
         </div>
         <div className="w-1/5 ">
-          {status.status === "closed" ? result : "postponed"}
+          {status === "closed" ? result : status.replace("_", " ")}
         </div>
         <div className="bg-gray-100 shadow-lg shadow-gray-500/50 w-2/5 border-double border-4 border-gray-300 rounded-lg mr-auto">
           {secondTeamName}
         </div>
       </div>
-      {status.status === "closed" ? (
+      {status === "closed" ? (
         <BallPossession ballpossession={ballpossession} />
       ) : (
         ""
       )}
 
-      {status.status === "closed" ? (
+      {status === "closed" ? (
         timeline.map(
           ({
             id,
@@ -73,7 +95,9 @@ const About = () => {
               type === "shot_saved" ||
               type === "injury_time_shown" ||
               type === "possible_goal" ||
-              type === "substitution"
+              type === "substitution" ||
+              type === "video_assistant_referee" ||
+              type === "video_assistant_referee_over"
             )
               return null;
 
@@ -113,7 +137,7 @@ const About = () => {
             }
 
             if (type === "period_score") {
-              let resultPeriod = status.period_scores[0];
+              let resultPeriod = period_scores[0];
               return (
                 <Alert
                   key={id}
@@ -133,8 +157,8 @@ const About = () => {
                 descriptionType={type.replace("_", " ")}
                 minutes={match_time}
                 position={competitor}
-                scorer={players[0]?.name}
-                assist={players[1]?.name}
+                scorer={players && players[0]?.name}
+                assist={players && players[1]?.name}
                 goolHomeScore={home_score}
                 goolAwayScore={away_score}
               />

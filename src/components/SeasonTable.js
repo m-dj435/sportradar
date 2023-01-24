@@ -20,7 +20,9 @@ const SeasonTable = ({ data }) => {
     const isPlayed = sportStatus === "closed";
 
     const rowClickHandler = () => {
-      navigate(`/about/${sport_event.id}`);
+      const lastUnnecessaryChar = sport_event.id.lastIndexOf(":");
+      let matchId = sport_event.id.substring(lastUnnecessaryChar + 1);
+      navigate(`/about/${matchId}`);
     };
 
     return (
@@ -77,23 +79,3 @@ const SeasonTable = ({ data }) => {
 };
 
 export default SeasonTable;
-
-// //import axios from "axios";
-// import React from "react";
-// import mockedData from "../mockedData.json";
-
-// //const URL = process.env.REACT_APP_API_KEY;
-// //const API_URI = `https://api.sportradar.us/soccer/trial/v4/en/seasons/sr:season:77453/schedules.json?api_key=${URL}`;
-
-// const SeasonResults = () => {
-//   //const [data, setData] = useState(mockedData);
-
-//   // useEffect(() => {
-//   //   const fetchData = async () => {
-//   //     const result = await axios(
-//   //       `https://api.sportradar.us/soccer/trial/v4/en/seasons/sr:season:77453/schedules.json?api_key=${URL}`
-//   //     );
-//   //     setData(result.data);
-//   //   };
-//   //   fetchData();
-//   // }, []);

@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Getting familiar with this app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This app is about Ekstraklasa seasons. In order to see timeline of particular match please click on table row representing sport event you are interested in.
 
-## Available Scripts
+## Env.
 
-In the project directory, you can run:
+Please see that this uses SECRET_KEY. In order to use this app please set your own key please register [https://developer.sportradar.com/docs/read/Home](sportradar) over there. Furthermore please set you REACT_APP_API_KEY in .env.local file in the root of project
 
-### `npm start`
+## Please be aware of CORS issue.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Unfortunately I struggle with sportradar calls ended up with CORS error.
+In order to fix problem I could make an proxy server however that was not the point of my tasks so I decided to use [https://chrome.google.com/webstore/detail/moesif-origin-cors-change/digfbfaphojjndkpccljibejjbppifbc](Moesif Origin & CORS Changer) chrome extension.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### In project helpers folder
 
-### `npm test`
+You can find mocked data that can be easily set up for a season table.
+You need to remove from homepage.js the following:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+useEffect(() => {
+  const fetchData = async () => {
+    const result = await axios(
+      `https://api.sportradar.us/soccer/trial/v4/en/seasons/sr:season:${value}/schedules.json?api_key=${URL}`
+    );
+    setData(result.data.schedules);
+    setIsLoading(false);
+  };
+  fetchData();
+}, [value]);
+```
 
-### `npm run build`
+```
+if (isLoading) return <Spinner />;
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+And finally here replace data with schedules that are already imported in file
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+const filteredDataSeasons = data.filter(
+  ({ sport_event }) =>
+    sport_event.sport_event_context.season.name === seasonName
+);
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Please be aware that timeline might use mock data as well but with only three random matches info. Find them in helpers folder. To set this up please get yourself familiar with this app.
